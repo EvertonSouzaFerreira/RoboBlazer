@@ -9,5 +9,8 @@
     "node-cron": "^3.0.2",
     "puppeteer": "^19.8.2",
     "puppeteer-core": "^10.4.0"
+  },
+  "scripts": {
+    "start": "node app"
   }
 }

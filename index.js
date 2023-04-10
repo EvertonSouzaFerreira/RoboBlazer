@@ -466,6 +466,8 @@ const express = require("express");
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 const app = express();
+const puppeteer2 = require("puppeteer-core");
+const dotenv = require("dotenv");
 
 let redStones = [];
 let sums = [];
@@ -476,11 +478,23 @@ let processedRedStones = [];
 let lastRedTime = null;
 let redStoneFound = false; // variável adicionada para controlar se a pedra vermelha já foi encontrada e somada
 let ColorPedra = "Red";
-
+dotenv.config();
 const URL = "https://www.historicosblaze.com/br/blaze/doubles";
 
 async function extractData() {
-  const browser = await puppeteer.launch();
+  process.env.PUPPETEER_CACHE_PATH = "/path/to/puppeteer/cache";
+  const browser = await puppeteer.launch({
+    args: [
+      "--disable-setuid-sandbox",
+      "--no-sandbox",
+      "--single-process",
+      "--no-zygote",
+    ],
+    executablePath:
+      process.env.NODE_ENV === "production"
+        ? process.env.PUPPETEER_EXECUTABLE_PATH
+        : puppeteer.executablePath(),
+  });
   const page = await browser.newPage();
 
   await page.goto(URL, { timeout: 70000 });
@@ -494,8 +508,6 @@ async function extractData() {
   page.on("beforeunload", () => {
     timeBeforeUnload = Date.now();
   });
-
-  const firstColor = await color[0].evaluate((node) => node.textContent);
 
   for (
     let i = 0;
@@ -577,6 +589,13 @@ async function extractData() {
 }
 
 module.exports = { extractData };
+
+(async () => {
+  const browserFetcher = puppeteer2.createBrowserFetcher();
+  const revisionInfo = await browserFetcher.download("856583");
+
+  console.log(revisionInfo.executablePath);
+})();
 // (async () => {
 //   while (true) {
 //     await extractData();

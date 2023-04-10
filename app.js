@@ -84,10 +84,17 @@ const port = 3000;
 // });
 //mongodb+srv://everton:MongoDb@cluster0.h5v7cj1.mongodb.net/amazona?retryWrites=true&w=majority
 dotenv.config();
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("connected to db");
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
 
 // Criar esquema para modelo de dados
 // const respostaSchema = new mongoose.Schema({
@@ -133,6 +140,10 @@ job.start();
 app.get("/data", async (req, res) => {
   const resposta = await Resposta.findOne();
   res.json(resposta);
+});
+
+app.get("/", async (req, res) => {
+  res.send("Resposta puppeteer");
 });
 
 app.listen(port, () => {

@@ -485,12 +485,12 @@ async function extractData() {
   process.env.PUPPETEER_CACHE_PATH = "/path/to/puppeteer/cache";
   const browser = await puppeteer.launch({
     headless: false,
-    // args: [
-    //   "--disable-setuid-sandbox",
-    //   "--no-sandbox",
-    //   "--single-process",
-    //   "--no-zygote",
-    // ],
+    args: [
+      "--disable-setuid-sandbox",
+      "--no-sandbox",
+      // "--single-process",
+      // "--no-zygote",
+    ],
     executablePath:
       process.env.NODE_ENV === "production"
         ? process.env.PUPPETEER_EXECUTABLE_PATH
@@ -591,12 +591,12 @@ async function extractData() {
 
 module.exports = { extractData };
 
-(async () => {
-  const browserFetcher = puppeteer2.createBrowserFetcher();
-  const revisionInfo = await browserFetcher.download("856583");
+// (async () => {
+//   const browserFetcher = puppeteer2.createBrowserFetcher();
+//   const revisionInfo = await browserFetcher.download("856583");
 
-  console.log(revisionInfo.executablePath);
-})();
+//   console.log(revisionInfo.executablePath);
+// })();
 // (async () => {
 //   while (true) {
 //     await extractData();

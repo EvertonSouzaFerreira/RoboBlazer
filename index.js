@@ -484,12 +484,13 @@ const URL = "https://www.historicosblaze.com/br/blaze/doubles";
 async function extractData() {
   process.env.PUPPETEER_CACHE_PATH = "/path/to/puppeteer/cache";
   const browser = await puppeteer.launch({
-    args: [
-      "--disable-setuid-sandbox",
-      "--no-sandbox",
-      "--single-process",
-      "--no-zygote",
-    ],
+    headless: false,
+    // args: [
+    //   "--disable-setuid-sandbox",
+    //   "--no-sandbox",
+    //   "--single-process",
+    //   "--no-zygote",
+    // ],
     executablePath:
       process.env.NODE_ENV === "production"
         ? process.env.PUPPETEER_EXECUTABLE_PATH
